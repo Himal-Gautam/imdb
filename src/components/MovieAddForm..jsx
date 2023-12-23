@@ -111,29 +111,69 @@ const MovieForm = () => {
 
   // Event handler for actor dropdown changes
   const handleActorChange = (selectedActors) => {
-    setFormData({ ...formData, actors: selectedActors });
+    setFormData({ ...formData, actors: selectedActors._id });
   };
 
   // Event handler for producer dropdown changes
   const handleProducerChange = (selectedProducer) => {
-    setFormData({ ...formData, producer: selectedProducer });
+    setFormData({ ...formData, producer: selectedProducer._id });
   };
 
   // Event handler for form submission
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    // Add your logic to handle form submission, e.g., send data to the server
-    console.log("Form submitted:", formData);
-    // Reset the form
-    setFormData({
-      name: "",
-      yearOfRelease: "",
-      plot: "",
-      poster: "",
-      producer: "",
-      actors: [],
-    });
-  };
+    const handleSubmit = async (e) => {
+      e.preventDefault();
+
+      // if (!name || !email || !password) {
+      //   setError("All fields are necessary.");
+      //   return;
+      // }
+
+      try {
+        // const resUserExists = await fetch("api/userExists", {
+        //   method: "POST",
+        //   headers: {
+        //     "Content-Type": "application/json",
+        //   },
+        //   body: JSON.stringify({ email }),
+        // });
+
+        // const { user } = await resUserExists.json();
+
+        // if (user) {
+        //   setError("User already exists.");
+        //   return;
+        // }
+
+        const res = await fetch("api/movies", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(formData),
+        });
+
+        if (res.ok) {
+          const form = e.target;
+          form.reset();
+        } else {
+          console.log("User registration failed.");
+        }
+      } catch (error) {
+        console.log("Error during registration: ", error);
+      }
+      console.log("Form submitted:", formData);
+      // Reset the form
+      setFormData({
+        name: "",
+        yearOfRelease: "",
+        plot: "",
+        poster: "",
+        producer: "",
+        actors: [],
+      });
+    };
+   
+
 
 
   const customStyles = {

@@ -8,13 +8,17 @@ import { NextResponse } from "next/server";
 
 export async function GET(req) {
   try {
+    console.log("hello");
     await connectMongoDB();
-    const movies = await Movie.find().populate("producer").populate("actors");
+    const movies = await Movie.find()
+      .populate("actors")
+      .populate("producer")
+  
     return NextResponse.json({ movies }, { status: 200 });
   } catch (error) {
     return NextResponse.json(
-      { message: "An error occurred while fetching movies." },
-      
+      { message: "An error occurred while fetching movies.", error },
+
       { status: 500 }
     );
   }
@@ -24,6 +28,8 @@ export async function POST(req) {
   try {
     const { name, yearOfRelease, plot, poster, actors, producer } =
       await req.json();
+
+      console.log({ name, yearOfRelease, plot, poster, actors, producer });
 
     // Basic validation
     if (!name || !yearOfRelease || !plot || !producer || actors?.length == 0) {

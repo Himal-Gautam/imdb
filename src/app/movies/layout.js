@@ -15,7 +15,7 @@ export default function HomeLayout({
   return (
     <section>
       <div className="navbar p-1.5 bg-base-300 justify-between items-center">
-        <div class="bg-yellow-400 py-1 px-2 text-2xl rounded-lg text-black font-bold">
+        <div className="bg-yellow-400 py-1 px-2 text-2xl rounded-lg text-black font-bold">
           IMDb
         </div>
         <div className="flex gap-5 p-4 bg-base-300 justify-between items-center">

@@ -32,5 +32,21 @@ const moviesSchema = new Schema(
   { timestamps: true }
 );
 
+moviesSchema.virtual("populatedActors", {
+  ref: "Actor",
+  localField: "actors",
+  foreignField: "_id",
+  justOne: false,
+});
+
+moviesSchema.virtual("populatedProducer", {
+  ref: "Producer",
+  localField: "producer",
+  foreignField: "_id",
+  justOne: true,
+});
+
+moviesSchema.set("toObject", { virtuals: true });
+moviesSchema.set("toJSON", { virtuals: true });
 const Movie = models.Movie || mongoose.model("Movie", moviesSchema);
 export default Movie;
