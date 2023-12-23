@@ -15,7 +15,7 @@ export const authOptions = {
 
         try {
           await connectMongoDB();
-          const user = await User.findOne({ email });
+          const user = await User.findOne({ email }).maxTimeMS(5000);
 
           if (!user) {
             return null;

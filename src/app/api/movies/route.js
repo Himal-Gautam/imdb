@@ -2,16 +2,19 @@
 
 import { connectMongoDB } from "@/lib/mongodb";
 import Movie from "@/models/movie";
+import Actor from "@/models/actor";
+import Producer from "@/models/producer";
 import { NextResponse } from "next/server";
 
 export async function GET(req) {
   try {
     await connectMongoDB();
-    const movies = await Movie.find();
+    const movies = await Movie.find().populate("producer").populate("actors");
     return NextResponse.json({ movies }, { status: 200 });
   } catch (error) {
     return NextResponse.json(
       { message: "An error occurred while fetching movies." },
+      
       { status: 500 }
     );
   }
@@ -23,7 +26,7 @@ export async function POST(req) {
       await req.json();
 
     // Basic validation
-    if (!name || !yearOfRelease || !plot || !producer || actors?.length == 0 ) {
+    if (!name || !yearOfRelease || !plot || !producer || actors?.length == 0) {
       return NextResponse.json(
         {
           message:
